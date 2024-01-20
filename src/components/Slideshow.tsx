@@ -73,36 +73,43 @@ export function Slideshow() {
   if (!currentImage) return null;
 
   return (
-    <section className=" flex-1 h-full">
-      <img className=" max-h-full" src={currentImage} alt="" />
-      <div className="flex justify-between">
+    <section className=" flex flex-1 h-full justify-center">
+      <img
+        className="block max-h-full object-contain"
+        src={currentImage}
+        alt=""
+      />
+      <div className=" absolute top-0 w-full p-2 flex justify-end">
         <Button
-          className=" absolute bottom-0 right-0"
-          disabled={!isThereNextImage}
+          variant={"ghost"}
           onClick={() => {
-            setCurrentTimeProgress(0);
-            clearIntervals();
-            setIntervals();
             send({
-              type: "NEXT_IMAGE",
+              type: "END_SLIDESHOW",
             });
           }}
         >
-          Next
+          End session
         </Button>
       </div>
-      <Button
-        className=" absolute top-0 right-0"
-        variant={"ghost"}
-        onClick={() => {
-          send({
-            type: "END_SLIDESHOW",
-          });
-        }}
-      >
-        End session
-      </Button>
-      <Progress className="" value={currentProgress} />
+
+      <div className=" absolute bottom-0 flex flex-col w-full">
+        <div className=" flex gap-4 justify-end ">
+          <Button
+            disabled={!isThereNextImage}
+            onClick={() => {
+              setCurrentTimeProgress(0);
+              clearIntervals();
+              setIntervals();
+              send({
+                type: "NEXT_IMAGE",
+              });
+            }}
+          >
+            Next
+          </Button>
+        </div>
+        <Progress value={currentProgress} />
+      </div>
     </section>
   );
 }

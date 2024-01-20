@@ -14,7 +14,7 @@ function App() {
   const isSldeshow = state.matches("SlideShow");
 
   return (
-    <div className=" min-h-screen flex flex-col p-5">
+    <div className="h-screen flex flex-col p-5">
       {isSldeshow ? (
         <Slideshow />
       ) : (
