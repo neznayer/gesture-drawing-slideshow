@@ -11,8 +11,6 @@ export function FileSelector() {
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      // Do something with the files
-      console.log(acceptedFiles);
       send({
         type: "SET_IMAGES",
         payload: [

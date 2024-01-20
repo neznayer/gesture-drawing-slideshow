@@ -14,15 +14,17 @@ function App() {
   const isSldeshow = state.matches("SlideShow");
 
   return (
-    <div className=" min-h-screen flex flex-col">
+    <div className=" min-h-screen flex flex-col p-5">
       {isSldeshow ? (
         <Slideshow />
       ) : (
-        <>
+        <div className="flex flex-1 flex-col gap-4">
           <FileSelector />
-          <ImageGallery />
-          <Settings />
-        </>
+          <div className="flex gap-4 flex-1">
+            <ImageGallery />
+            <Settings />
+          </div>
+        </div>
       )}
     </div>
   );
