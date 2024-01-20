@@ -1,11 +1,11 @@
 import { createActorContext } from "@xstate/react";
 import { PropsWithChildren } from "react";
 import { machine } from "../state/machine";
-import { createBrowserInspector } from "@statelyai/inspect";
+// import { createBrowserInspector } from "@statelyai/inspect";
 
-const { inspect } = createBrowserInspector();
+// const { inspect } = createBrowserInspector();
 
-export const DataContext = createActorContext(machine, { inspect });
+export const DataContext = createActorContext(machine);
 
 interface StateProviderProps extends PropsWithChildren {}
 
