@@ -30,6 +30,10 @@ export const machine = setup({
         }
       | {
           type: "SHUFFLE_IMAGES";
+        }
+      | {
+          type: "REMOVE_IMAGE";
+          payload: string;
         },
   },
 
@@ -63,6 +67,19 @@ export const machine = setup({
           target: "SelectingFiles",
           actions: assign({
             images: ({ event }) => event?.payload || [],
+          }),
+        },
+        REMOVE_IMAGE: {
+          target: "SelectingFiles",
+          actions: assign({
+            images: ({ context, event }) => {
+              const images = [...context.images];
+              const index = images.indexOf(event?.payload);
+              if (index > -1) {
+                images.splice(index, 1);
+              }
+              return images;
+            },
           }),
         },
         SHUFFLE_IMAGES: {

@@ -1,4 +1,5 @@
 import { DataContext } from "../context/DataContext";
+import { Image } from "./Image";
 import { Button } from "./ui/button";
 
 export function ImageGallery() {
@@ -18,7 +19,7 @@ export function ImageGallery() {
       <ul className=" flex gap-2 flex-wrap">
         {imageURLs.map((file) => (
           <li className="w-10" key={file}>
-            <img src={file} alt="" />
+            <Image src={file} />
           </li>
         ))}
       </ul>
