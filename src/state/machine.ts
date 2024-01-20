@@ -61,6 +61,7 @@ export const machine = setup({
       on: {
         START_SLIDESHOW: {
           target: "SlideShow",
+          guard: "isThereFiles",
         },
 
         SET_IMAGES: {
