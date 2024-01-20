@@ -1,6 +1,7 @@
 import { DataContext } from "@/context/DataContext";
 import { Button } from "./ui/button";
 import { useEffect, useRef, useState } from "react";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 export function Image({ src }: { src: string }) {
   const { send } = DataContext.useActorRef();
@@ -37,7 +38,7 @@ export function Image({ src }: { src: string }) {
     <div ref={containerRef} className=" relative min-h-10">
       {hovered ? (
         <Button
-          className=" absolute top-1 right-1 w-[8px] h-[8px] rounded-full"
+          className=" absolute top-1 right-1 w-5 h-5 p-0 rounded-full"
           variant={"destructive"}
           onClick={() => {
             send({
@@ -46,7 +47,7 @@ export function Image({ src }: { src: string }) {
             });
           }}
         >
-          x
+          <Cross2Icon />
         </Button>
       ) : null}
       <img src={src} alt="" />
