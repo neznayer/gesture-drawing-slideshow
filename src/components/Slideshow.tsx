@@ -11,53 +11,78 @@ export function Slideshow() {
     (state) => state.context.currentImageIndex || 0
   );
 
-  const [currentTimeProgress, setCurrentTimeProgress] = useState(0);
-
-  const currentImage = imageURLs[currentIndex];
-
-  const timer = useRef<NodeJS.Timeout>();
-
-  const timeProgress = useRef<NodeJS.Timeout>();
-
   const currentIndexRef = useRef(currentIndex);
 
   currentIndexRef.current = currentIndex;
 
-  useEffect(() => {
+  const [currentTimeProgress, setCurrentTimeProgress] = useState(0);
+
+  const currentTimeProgressRef = useRef(currentTimeProgress);
+
+  currentTimeProgressRef.current = currentTimeProgress;
+
+  const currentImage = imageURLs[currentIndex];
+
+  const timeProgress = useRef<NodeJS.Timeout>();
+
+  const currentProgress =
+    (currentTimeProgress / (settings.timeIntervalSeconds * 1000)) * 100;
+
+  function setIntervals() {
     if (settings.timeIntervalSeconds <= 0) return;
 
     timeProgress.current = setInterval(() => {
-      setCurrentTimeProgress((prev) => prev + 100);
+      setCurrentTimeProgress((prev) => {
+        if (
+          (currentTimeProgressRef.current /
+            (settings.timeIntervalSeconds * 1000)) *
+            100 <
+          100
+        ) {
+          return prev + 100;
+        } else {
+          if (currentIndexRef.current === imageURLs.length - 1) {
+            send({
+              type: "END_SLIDESHOW",
+            });
+          } else {
+            send({
+              type: "NEXT_IMAGE",
+            });
+          }
+
+          return 0;
+        }
+      });
     }, 100);
+  }
 
-    timer.current = setInterval(() => {
-      setCurrentTimeProgress(0);
+  const isThereNextImage = currentIndex < imageURLs.length - 1;
 
-      if (currentIndexRef.current === imageURLs.length - 1) {
-        send({
-          type: "END_SLIDESHOW",
-        });
-      } else {
-        send({
-          type: "NEXT_IMAGE",
-        });
-      }
-    }, settings.timeIntervalSeconds * 1000);
+  function clearIntervals() {
+    clearInterval(timeProgress.current);
+  }
+
+  useEffect(() => {
+    setIntervals();
     return () => {
-      clearInterval(timer.current);
-      clearInterval(timeProgress.current);
+      clearIntervals();
     };
   }, []);
 
   if (!currentImage) return null;
 
   return (
-    <section className=" flex-1">
-      <img className=" h-full" src={currentImage} alt="" />
+    <section className=" flex-1 h-full">
+      <img className=" max-h-full" src={currentImage} alt="" />
       <div className="flex justify-between">
         <Button
           className=" absolute bottom-0 right-0"
+          disabled={!isThereNextImage}
           onClick={() => {
+            setCurrentTimeProgress(0);
+            clearIntervals();
+            setIntervals();
             send({
               type: "NEXT_IMAGE",
             });
@@ -77,12 +102,7 @@ export function Slideshow() {
       >
         End session
       </Button>
-      <Progress
-        className=""
-        value={Math.ceil(
-          (currentTimeProgress / (settings.timeIntervalSeconds * 1000)) * 100
-        )}
-      />
+      <Progress className="" value={currentProgress} />
     </section>
   );
 }
