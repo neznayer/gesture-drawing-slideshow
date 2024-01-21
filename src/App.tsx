@@ -5,6 +5,7 @@ import { ImageGallery } from "./components/ImageGallery";
 import { Settings } from "./components/Settings";
 import { DataContext } from "./context/DataContext";
 import { Slideshow } from "./components/Slideshow";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 function App() {
   const actorRef = DataContext.useActorRef();
@@ -15,6 +16,13 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col p-5">
+      <header className="flex justify-between items-center gap-2 text-sm h-5 mb-3">
+        <img src="/icon.svg" className="w-12 h-12" />
+        <a href="https://github.com/neznayer/gesture-drawing-slideshow">
+          <GitHubLogoIcon className=" text-gray-300 inline mr-1" />
+          <span className="text-gray-300">Neznayer</span>
+        </a>
+      </header>
       {isSldeshow ? (
         <Slideshow />
       ) : (
